@@ -1,4 +1,4 @@
-import math
+from math import tan
 from numpy import array
 
 
@@ -6,9 +6,9 @@ class Projection:
     def __init__(self, render):
         NEAR = render.camera.near_plane
         FAR = render.camera.far_plane
-        RIGHT = math.tan(render.camera.h_fov / 2)
+        RIGHT = tan(render.camera.h_fov / 2)
         LEFT = -RIGHT
-        TOP = math.tan(render.camera.v_fov / 2)
+        TOP = tan(render.camera.v_fov / 2)
         BOTTOM = -TOP
 
         m00 = 2 / (RIGHT - LEFT)

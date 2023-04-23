@@ -1,18 +1,24 @@
 import pygame as pg
-from matrix_transformations import *
-from numpy import array, any
+
+from matrix_transformations import (
+    rotate_x, 
+    rotate_y, 
+    rotate_z, 
+    scale, 
+    translate
+)
+from numpy import any, array
+
 
 class Object3D:
-    def __init__(self, render):
+    def __init__(self, render, vertexes, color):
         self.render = render
-        self.vertexes = array([
-            (0, 0, 0, 1), (0, 1, 0, 1), (1, 1, 0, 1), (1, 0, 0, 1),
-            (0, 0, 1, 1), (0, 1, 1, 1), (1, 1, 1, 1), (1, 0, 1, 1)
-        ])
+        self.vertexes = vertexes
         self.faces = array([
             (0, 1, 2, 3), (4, 5, 6, 7), (0, 4, 7, 3), 
             (1, 5, 6, 2), (0, 1, 5, 4), (3, 2, 6, 7)
         ])
+        self.color = color
 
     def draw(self):
         self.screen_projection()
@@ -21,18 +27,18 @@ class Object3D:
         vertexes = self.vertexes @ self.render.camera.camera_matrix()
         vertexes = vertexes @ self.render.projection.projection_matrix
         vertexes /= vertexes[:, -1].reshape(-1, 1)
-        vertexes[(vertexes > 1) | (vertexes < -1)] = 0
+        vertexes[(vertexes > 2) | (vertexes < -2)] = 0
         vertexes = vertexes @ self.render.projection.to_screen_matrix
         vertexes = vertexes[:, :2]
 
         for face in self.faces:
             polygon = vertexes[face]
             if not any((polygon == self.render.H_WIDTH) | (polygon == self.render.H_HEIGHT)):
-                pg.draw.polygon(self.render.screen, pg.Color('orange'), polygon, 3)
+                pg.draw.polygon(self.render.screen, self.color, polygon, 3)
 
         for vertex in vertexes:
             if not any((vertex == self.render.H_WIDTH) | (vertex == self.render.H_HEIGHT)):
-                pg.draw.circle(self.render.screen, pg.Color('white'), vertex, 6)
+                pg.draw.circle(self.render.screen, self.color, vertex, 6)
 
     def translate(self, pos):
         self.vertexes = self.vertexes @ translate(pos)
