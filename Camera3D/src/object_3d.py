@@ -33,12 +33,12 @@ class Object3D:
 
         for face in self.faces:
             polygon = vertexes[face]
-            if not any((polygon == self.render.H_WIDTH) | (polygon == self.render.H_HEIGHT)):
-                pg.draw.polygon(self.render.screen, self.color, polygon, 3)
+            #if not any((polygon == self.render.H_WIDTH) | (polygon == self.render.H_HEIGHT)):
+            pg.draw.polygon(self.render.screen, self.color, polygon, 4)
 
-        for vertex in vertexes:
-            if not any((vertex == self.render.H_WIDTH) | (vertex == self.render.H_HEIGHT)):
-                pg.draw.circle(self.render.screen, self.color, vertex, 6)
+       # for vertex in vertexes:
+       #     if not any((vertex == self.render.H_WIDTH) | (vertex == self.render.H_HEIGHT)):
+       #         pg.draw.circle(self.render.screen, self.color, vertex, 6)
 
     def translate(self, pos):
         self.vertexes = self.vertexes @ translate(pos)
