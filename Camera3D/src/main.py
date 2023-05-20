@@ -8,7 +8,7 @@ from projection import Projection
 
 class SoftwareRender:
     def __init__(self) -> None:
-        self.RESOLUTION = self.WIDTH, self.HEIGHT = 1600, 900
+        self.RESOLUTION = self.WIDTH, self.HEIGHT = 1400, 750
         self.H_WIDTH, self.H_HEIGHT = self.WIDTH // 2, self.HEIGHT // 2
         self.FPS = 60
         self.screen = pg.display.set_mode(size=self.RESOLUTION)
@@ -16,7 +16,7 @@ class SoftwareRender:
         self.create_objects()
 
     def create_objects(self):
-        self.camera = Camera(self, [1.25, 0, 0])
+        self.camera = Camera(self, [0, 0, 0])
         self.projection = Projection(self)
         vertexes_blue = array([
             (0, 0, 0, 1), (0, 1, 0, 1), (1, 1, 0, 1), (1, 0, 0, 1),
@@ -37,7 +37,8 @@ class SoftwareRender:
         self.object_blue = Object3D(self, vertexes_blue, pg.Color('blue'))
         self.object_red = Object3D(self, vertexes_red, pg.Color('red'))
         self.object_green = Object3D(self, vertexes_green, pg.Color('green'))
-        self.object_yellow = Object3D(self, vertexes_yellow, pg.Color('yellow'))
+        self.object_yellow = Object3D(
+            self, vertexes_yellow, pg.Color('yellow'))
 
     def draw(self):
         self.screen.fill(pg.Color('black'))
@@ -52,8 +53,9 @@ class SoftwareRender:
             self.camera.control()
             [exit() for i in pg.event.get() if i.type == pg.QUIT]
             pg.display.set_caption(str(self.clock.get_fps()))
-            pg.display.flip() # update full surface of the screen
+            pg.display.flip()  # update full surface of the screen
             self.clock.tick(self.FPS)
+
 
 if __name__ == '__main__':
     SoftwareRender().run()
