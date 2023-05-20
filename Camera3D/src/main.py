@@ -16,7 +16,7 @@ class SoftwareRender:
         self.create_objects()
 
     def create_objects(self):
-        self.camera = Camera(self, [1.5, 1.5, -10])
+        self.camera = Camera(self, [2, 2, -10])
         self.projection = Projection(self)
         vertexes_blue = array([
             (0, 0, 0, 1), (0, 1, 0, 1), (1, 1, 0, 1), (1, 0, 0, 1),
