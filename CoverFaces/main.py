@@ -14,15 +14,15 @@ class Scene(object):
 
     def load_scene(self):
         scene = []
-        scene.append(Cube((-10, -10, 40), 10, "red"))
-        scene.append(Cube((10, -10, 40), 10, "green"))
-        scene.append(Cube((10, -10, 60), 10, "orange"))
-        scene.append(Cube((-10, -10, 60), 10, "Turquoise"))
+        scene.append(Cube((-10, -10, 40), 10, "white"))
+        scene.append(Cube((10, -10, 40), 10, "blue"))
+        scene.append(Cube((10, -10, 60), 10, "yellow"))
+        scene.append(Cube((-10, -10, 60), 10, "pink"))
 
-        scene.append(Cube((-10, 10, 40), 10, "Magenta"))
-        scene.append(Cube((10, 10, 40), 10, "Lime"))
-        scene.append(Cube((10, 10, 60), 10, "white"))
-        scene.append(Cube((-10, 10, 60), 10, "yellow"))
+        scene.append(Cube((-10, 10, 40), 10, "orange"))
+        scene.append(Cube((10, 10, 40), 10, "green"))
+        scene.append(Cube((10, 10, 60), 10, "red"))
+        scene.append(Cube((-10, 10, 60), 10, "grey"))
 
         self.scene_data = scene
         self.render()
