@@ -1,6 +1,7 @@
 import math
-import pygame
+import threading
 
+import pygame
 from pygame import Surface
 
 
@@ -19,7 +20,25 @@ class PhongBall:
         self.center = [self.center_x, self.center_y, 0]
 
     def create_image(self, window: Surface):
-        for x in range(-self.width, self.width):
+        num_threads = 10
+        step = self.width * 2 // num_threads
+
+        threads = []
+        for i in range(num_threads):
+            start_x = -self.width + i * step
+            end_x = -self.width + (i + 1) * step
+
+            thread = threading.Thread(
+                target=self.process_points, args=(window, start_x, end_x)
+            )
+            threads.append(thread)
+            thread.start()
+
+        for thread in threads:
+            thread.join()
+
+    def process_points(self, window: Surface, start_x, end_x):
+        for x in range(start_x, end_x):
             for y in range(-self.height, self.height):
                 dist = math.sqrt(x ** 2 + y ** 2)
                 if dist < self.radius:
@@ -35,20 +54,18 @@ class PhongBall:
                     illumination = self.__arr_sum(
                         [
                             self.__ambient(),
-                            self.__diffuse(light, normal), 
-                            self.__specular(reflection, viewer, self.spec_pow)
+                            self.__diffuse(light, normal),
+                            self.__specular(reflection, viewer, self.spec_pow),
                         ]
                     )
 
-                    color = (
-                        int(self.__normalize(illumination[0]) * 255),
-                        int(self.__normalize(illumination[1]) * 255),
-                        int(self.__normalize(illumination[2]) * 255)
+                    color = list(int(self.__normalize(x) * 255) for x in illumination)
+                    pygame.draw.rect(
+                        window, color, (x + self.center_x, y + self.center_y, 1, 1)
                     )
-                    pygame.draw.rect(window, color, (x + self.center_x, y + self.center_y, 1, 1))
 
     def move_light_pos(self, direction, axis):
-        pos = 0 if axis == 'x' else 1
+        pos = 0 if axis == "x" else 1
         self.light_pos[pos] += direction * 50
 
     def update_colors(self, table):
@@ -69,7 +86,10 @@ class PhongBall:
         result = []
         for i in range(3):
             result.append(
-                math.pow(max(0.0, self.__multiply_vector(reflect, vis)), pow_elem) * self.k_s[i] * self.light_col[i])
+                math.pow(max(0.0, self.__multiply_vector(reflect, vis)), pow_elem)
+                * self.k_s[i]
+                * self.light_col[i]
+            )
         return result
 
     def __reflect_vector(self, light_vector, normal_vector):
@@ -94,14 +114,16 @@ class PhongBall:
 
     @staticmethod
     def __normalize(value: float) -> float:
-       return max(0, min(1, value))
+        return max(0, min(1, value))
 
     @staticmethod
     def __uv(vector):
         result = []
         if len(vector) != 3:
             raise ValueError
-        vector_mag = math.sqrt(math.pow(vector[0], 2) + math.pow(vector[1], 2) + math.pow(vector[2], 2))
+        vector_mag = math.sqrt(
+            math.pow(vector[0], 2) + math.pow(vector[1], 2) + math.pow(vector[2], 2)
+        )
         for i in range(3):
             result.append(vector[i] / vector_mag)
         return result

@@ -1,8 +1,8 @@
 import json
-import pygame
-from pygame.locals import *
 
+import pygame
 from phong_ball import PhongBall
+from pygame.locals import *
 
 WINDOW_X_SIZE = 400
 WINDOW_Y_SIZE = 400
@@ -15,14 +15,15 @@ refresh = True
 
 # Mapowanie klawiszy na akcje
 KEY_ACTIONS = {
-    K_a: lambda: ball.move_light_pos(-1, 'x'),
-    K_d: lambda: ball.move_light_pos(1, 'x'),
-    K_w: lambda: ball.move_light_pos(-1, 'y'),
-    K_s: lambda: ball.move_light_pos(1, 'y'),
-    K_1: lambda: load_config("config.json"),
-    K_2: lambda: load_config("config.json"),
-    K_3: lambda: load_config("config.json"),
-    K_4: lambda: load_config("config.json")
+    K_a: lambda: ball.move_light_pos(-1, "x"),
+    K_d: lambda: ball.move_light_pos(1, "x"),
+    K_w: lambda: ball.move_light_pos(-1, "y"),
+    K_s: lambda: ball.move_light_pos(1, "y"),
+    K_r: lambda: load_config("config/default.json"),
+    K_1: lambda: load_config("config/metal.json"),
+    K_2: lambda: load_config("config/drewno.json"),
+    K_3: lambda: load_config("config/jedwab.json"),
+    K_4: lambda: load_config("config/matowa_farba.json"),
 }
 
 
@@ -45,11 +46,13 @@ def handle_events():
                 KEY_ACTIONS[event.key]()
                 refresh = True
 
+
 # Odświeżanie ekranu
 def refresh_screen():
     pygame.draw.rect(window, (0, 0, 0), (0, 0, WINDOW_X_SIZE, WINDOW_Y_SIZE))
     ball.create_image(window)
     pygame.display.update()
+
 
 # Główna pętla programu
 def main_loop():
@@ -59,7 +62,9 @@ def main_loop():
         if refresh:
             refresh_screen()
             refresh = False
+            print("REFRESHED")
 
-if __name__ == '__main__':
-    load_config("config.json")
+
+if __name__ == "__main__":
+    load_config("config/default.json")
     main_loop()
