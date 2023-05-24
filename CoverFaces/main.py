@@ -58,7 +58,8 @@ class Scene(object):
 
         if axis == "x":
             transform[1:3, 1:3] = np.array(
-                [[np.cos(angle), -np.sin(angle)], [np.sin(angle), np.cos(angle)]]
+                [[np.cos(angle), -np.sin(angle)],
+                 [np.sin(angle), np.cos(angle)]]
             )
         elif axis == "y":
             transform[0:3, 0:3] = np.array(
@@ -70,7 +71,8 @@ class Scene(object):
             )
         else:
             transform[0:2, 0:2] = np.array(
-                [[np.cos(angle), -np.sin(angle)], [np.sin(angle), np.cos(angle)]]
+                [[np.cos(angle), -np.sin(angle)],
+                 [np.sin(angle), np.cos(angle)]]
             )
 
         for poly in self.scene_data:
@@ -109,7 +111,8 @@ class Scene(object):
                 points = [
                     point.project(self.distance, (cw, ch)) for point in polygon.points
                 ]
-                canvas.create_polygon(points, fill=polygon.color, outline="black")
+                canvas.create_polygon(
+                    points, fill=polygon.color, outline="black")
         else:
             edges = []
             Edge = namedtuple("Edge", ["point1", "point2", "color"])
