@@ -15,7 +15,7 @@ class Scene(object):
     def load_scene(self):
         scene = []
         scene.append(Cube((-10, -10, 40), 10, "white"))
-        scene.append(Cube((10, -10, 40), 10, "blue"))
+        scene.append(Cube((-15, -17, 40), 10, "blue"))
         scene.append(Cube((10, -10, 60), 10, "yellow"))
         scene.append(Cube((-10, -10, 60), 10, "pink"))
 
