@@ -51,14 +51,14 @@ class Cube:
 
         points = []
         points.append(Point(pos))
-        points.append(Point(pos) + (size, 0, 0))
-        points.append(Point(pos) + (size, 0, size))
+        points.append(Point(pos))
+        points.append(Point(pos) + (0, 0, size))
         points.append(Point(pos) + (0, 0, size))
 
-        points.append(Point(pos) + (0, 2*size, 0))
+        points.append(Point(pos) + (size, 2*size, 0))
         points.append(Point(pos) + (size, 2*size, 0))
         points.append(Point(pos) + (size, 2*size, size))
-        points.append(Point(pos) + (0, 2*size, size))
+        points.append(Point(pos) + (size, 2*size, size))
 
         self.points = points
 
